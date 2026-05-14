@@ -49,7 +49,7 @@ dev = [
 ]
 
 [project.urls]
-Repository = "https://github.com/script-logic/fastapi"
+Repository = "https://github.com/script-logic/robyn-app-example-extended"
 
 [tool.uv]
 package = true
