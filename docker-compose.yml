@@ -1,0 +1,20 @@
+services:
+  robyn_try:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    deploy:
+      resources:
+        limits:
+          cpus: "0.3"
+          memory: 512M
+    container_name: robyn_example
+    stdin_open: true
+    tty: true
+    command: python -m robyn_example
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./local_database:/src/local_database:rw
+      - ./src:/src/src:ro
+    restart: "no"
