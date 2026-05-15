@@ -1,7 +1,7 @@
 # Copyright (c) 2026 script-logic <dev.scriptlogic@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from robyn import Robyn
+from robyn import SubRouter
 from robyn.types import PathParams
 from robyn_example.database import CrimesTable, DatabaseManager
 from robyn_example.database.crime_repository import (
@@ -13,6 +13,10 @@ from robyn_example.database.crime_repository import (
 )
 from robyn_example.di import Ioc
 from robyn_example.domain import CrimeEntity
+from robyn_example.robyn import auth_handler
+from robyn_example.robyn.endpoints.exceptions import (
+    exceptions_handler,
+)
 from robyn_example.robyn.endpoints.helpers import (
     crime_exist_policy,
     parse_query_params,
@@ -27,11 +31,12 @@ from .schemas import (
     GetCrimesQueryParams,
 )
 
-prefix = "/api/v1"
-app: Robyn = Ioc.robyn_app.resolve_sync()
+router = SubRouter(__file__, prefix="/api/v1/")
+router.exception(exceptions_handler)
+router.configure_authentication(auth_handler)
 
 
-@app.post(f"{prefix}/crime/add")
+@router.post("crime/add")
 async def add_crime(
     crime: CrimeEntity,
 ) -> CrimeResponse:
@@ -44,7 +49,7 @@ async def add_crime(
     return CrimeResponse.model_validate(new_crime)
 
 
-@app.get(f"{prefix}/crimes/get")
+@router.get("crimes/get")
 async def get_crimes(
     query_params: GetCrimesQueryParams,
 ) -> list[CrimeResponse]:
@@ -58,8 +63,8 @@ async def get_crimes(
     return [CrimeResponse.model_validate(c) for c in crimes]
 
 
-@app.get(
-    f"{prefix}/crime/:{CrimePathEnum.crime_id}",
+@router.get(
+    f"crime/:{CrimePathEnum.crime_id}",
     auth_required=True,
 )
 async def get_crime(path_params: PathParams) -> CrimeResponse:
@@ -73,7 +78,7 @@ async def get_crime(path_params: PathParams) -> CrimeResponse:
     return CrimeResponse.model_validate(crime)
 
 
-@app.put(f"{prefix}/crime/update/:{CrimePathEnum.crime_id}")
+@router.put(f"crime/update/:{CrimePathEnum.crime_id}")
 async def update_crime(
     path_params: PathParams,
     new_crime_data: CrimeEntity,
@@ -91,7 +96,7 @@ async def update_crime(
     return CrimeResponse.model_validate(updated_crime)
 
 
-@app.delete(f"{prefix}/crime/:{CrimePathEnum.crime_id}")
+@router.delete(f"crime/:{CrimePathEnum.crime_id}")
 async def delete_crime(
     path_params: PathParams,
 ) -> DeleteCrimeResponse:

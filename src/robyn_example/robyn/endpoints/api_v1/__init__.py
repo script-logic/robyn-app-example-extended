@@ -1,6 +1,7 @@
 # Copyright (c) 2026 script-logic <dev.scriptlogic@gmail.com>
 # SPDX-License-Identifier: MIT
 
+from .endpoints import router as router
 from .enums import CrimePathEnum as CrimePathEnum
 from .schemas import (
     CrimeId as CrimeId,
