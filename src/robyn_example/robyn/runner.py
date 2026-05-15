@@ -6,9 +6,9 @@ from contextvars import ContextVar
 from time import perf_counter_ns
 from uuid import uuid4
 
-from robyn import ALLOW_CORS, Request, Response, Robyn
 from that_depends import Provide, inject
 
+from robyn import ALLOW_CORS, Request, Response, Robyn
 from robyn_example.config import AppConfig
 from robyn_example.database import DatabaseManager
 from robyn_example.di import Ioc

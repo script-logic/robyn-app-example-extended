@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 from pydantic import BaseModel
+
 from robyn.robyn import QueryParams
 
 

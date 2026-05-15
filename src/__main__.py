@@ -2,13 +2,15 @@
 # SPDX-License-Identifier: MIT
 
 
+from robyn_example.logger import log, setup_logging
+
+
 class InitError(Exception): ...
 
 
 try:
-    from robyn_example.logger import log, setup_logging
-
     setup_logging()
+
     from robyn_example.robyn import run_robyn_app
 
     run_robyn_app()

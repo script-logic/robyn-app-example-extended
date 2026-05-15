@@ -5,7 +5,6 @@ from enum import StrEnum
 
 from robyn import status_codes
 from robyn.exceptions import HTTPException
-
 from robyn_example.database import CrimesTable
 
 
