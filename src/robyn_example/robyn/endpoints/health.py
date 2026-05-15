@@ -1,11 +1,10 @@
 # Copyright (c) 2026 script-logic <dev.scriptlogic@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from robyn import SubRouter
-
+from robyn import Robyn
 from robyn_example.di import Ioc
 
-app: SubRouter = Ioc.robyn_app.resolve_sync()
+app: Robyn = Ioc.robyn_app.resolve_sync()
 
 
 @app.get("/health", const=True)

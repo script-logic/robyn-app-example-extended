@@ -1,9 +1,8 @@
 # Copyright (c) 2026 script-logic <dev.scriptlogic@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from robyn import SubRouter
+from robyn import Robyn
 from robyn.types import PathParams
-
 from robyn_example.database import CrimesTable, DatabaseManager
 from robyn_example.database.crime_repository import (
     create_crime_repo,
@@ -29,7 +28,7 @@ from .schemas import (
 )
 
 prefix = "/api/v1"
-app: SubRouter = Ioc.robyn_app.resolve_sync()
+app: Robyn = Ioc.robyn_app.resolve_sync()
 
 
 @app.post(f"{prefix}/crime/add")
