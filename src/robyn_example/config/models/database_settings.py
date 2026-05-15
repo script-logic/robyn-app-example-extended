@@ -10,7 +10,7 @@ class SqliteSettings(BaseModel):
     db_name: str = Field(default="database.db", min_length=1)
     pool_size: int = 3
     max_overflow: int = 3
-    echo: bool = True
+    echo: bool = False
     expire_on_commit: bool = False
 
     @property

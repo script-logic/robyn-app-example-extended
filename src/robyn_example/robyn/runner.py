@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: MIT
 
 
+import json
 from contextvars import ContextVar
 from time import perf_counter_ns
 from uuid import uuid4
@@ -12,11 +13,11 @@ from robyn import ALLOW_CORS, Request, Response, Robyn
 from robyn_example.config import AppConfig
 from robyn_example.database import DatabaseManager
 from robyn_example.di import Ioc
-from robyn_example.domain import RequestMiddlewareEntity
 from robyn_example.logger import log
 
 from .endpoints import router as health_router
 from .endpoints.api_v1 import router as api_v1_router
+from .endpoints.helpers.parsers import try_format_json
 
 
 @inject
@@ -56,17 +57,23 @@ def run_robyn_app(
         await log.ainfo("request_id=%s", request_id)
         await log.adebug(
             "request=%s",
-            RequestMiddlewareEntity(
-                query_params=request.query_params.to_dict(),
-                headers=str(request.headers),
-                path_params=request.path_params,
-                body=request.body,
-                method=request.method,
-                url=str(request.url),
-                form_data=request.form_data,
-                files=request.files,
-                ip_addr=request.ip_addr,
-                identity=str(request.identity) if request.identity else None,
+            json.dumps(
+                {
+                    "query_params": request.query_params.to_dict(),
+                    "headers": json.loads(str(request.headers)),
+                    "path_params": request.path_params,
+                    "body": request.body,
+                    "method": request.method,
+                    "url": str(request.url.path),
+                    "form_data": request.form_data,
+                    "files": request.files,
+                    "ip_addr": request.ip_addr,
+                    "identity": str(request.identity)
+                    if request.identity
+                    else None,
+                },
+                default=str,
+                indent=2,
             ),
         )
         return request
@@ -92,8 +99,7 @@ def run_robyn_app(
             response_duration_ns,
         )
         await log.adebug(
-            "response.description=%s",
-            response.description,
+            "response.description=%s", try_format_json(response.description)
         )
         return response
 

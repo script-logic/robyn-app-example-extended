@@ -318,7 +318,7 @@ db.db_name = "database.db"
 db.pool_size = 3
 
 # Logging
-log.log_level = 10  # or "DEBUG"
+log.log_level = 10  # 10 means "DEBUG", 20 means "INFO", etc
 log.console_colors = True
 log.enable_file_logging = True
 
