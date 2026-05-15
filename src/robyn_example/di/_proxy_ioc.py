@@ -4,7 +4,7 @@
 from that_depends import BaseContainer
 from that_depends.experimental import LazyProvider
 
-REAL_IOC_PATH = "robyn_example.di._real_ioc._RealContainer"
+REAL_IOC_PATH = "robyn_example.di._real_ioc.RealContainer"
 
 
 class LazyProviderDescriptor:
