@@ -11,10 +11,7 @@ from robyn.robyn import Identity
 
 class AuthHandler(AuthenticationHandler):
     def authenticate(self, request: Request) -> Identity | None:
-        token = self.token_getter.get_token(request)
-        if token:
-            return Identity(claims={})
-        return None
+        return Identity({}) if self.token_getter.get_token(request) else None
 
 
 token_getter = BearerGetter()

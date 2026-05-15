@@ -14,9 +14,8 @@ from robyn_example.database import DatabaseManager
 from robyn_example.di import Ioc
 from robyn_example.domain import RequestMiddlewareEntity
 from robyn_example.logger import log
-
-from .endpoints import health_router
-from .endpoints.api_v1 import api_v1_router
+from robyn_example.robyn import auth_handler
+from robyn_example.robyn.endpoints.exceptions import exceptions_handler
 
 
 @inject
@@ -40,11 +39,11 @@ def run_robyn_app(
     app.startup_handler(startup)
     app.shutdown_handler(shutdown)
 
-    app.include_router(api_v1_router)
-    app.include_router(health_router)
-
     app.add_request_header("Content-Type", "application/json")
     app.add_response_header("Content-Type", "application/json")
+
+    app.exception(exceptions_handler)
+    app.configure_authentication(auth_handler)
 
     @app.before_request()
     async def before_middleware(request: Request) -> Request:

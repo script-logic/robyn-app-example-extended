@@ -1,7 +1,6 @@
 # Copyright (c) 2026 script-logic <dev.scriptlogic@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from .endpoints import api_v1 as api_v1_router
 from .enums import CrimePathEnum as CrimePathEnum
 from .schemas import (
     CrimeId as CrimeId,
@@ -21,5 +20,3 @@ from .schemas import (
 from .schemas import (
     GetCrimesQueryParams as GetCrimesQueryParams,
 )
-
-__all__ = ["api_v1_router"]

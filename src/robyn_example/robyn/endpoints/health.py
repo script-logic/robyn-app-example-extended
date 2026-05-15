@@ -3,17 +3,11 @@
 
 from robyn import SubRouter
 
-from robyn_example.robyn import auth_handler
+from robyn_example.di import Ioc
 
-from .exceptions import (
-    exceptions_handler,
-)
-
-router = SubRouter(__file__, prefix="/health")
-router.exception(exceptions_handler)
-router.configure_authentication(auth_handler)
+app: SubRouter = Ioc.robyn_app.resolve_sync()
 
 
-@router.get("", const=True)
+@app.get("/health", const=True)
 def health_check() -> dict[str, str]:
     return {"status": "healthy", "version": "1.0.0"}

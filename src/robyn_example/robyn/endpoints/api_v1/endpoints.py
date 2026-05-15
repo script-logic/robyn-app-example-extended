@@ -14,8 +14,6 @@ from robyn_example.database.crime_repository import (
 )
 from robyn_example.di import Ioc
 from robyn_example.domain import CrimeEntity
-from robyn_example.robyn import auth_handler
-from robyn_example.robyn.endpoints.exceptions import exceptions_handler
 from robyn_example.robyn.endpoints.helpers import (
     crime_exist_policy,
     parse_query_params,
@@ -30,12 +28,11 @@ from .schemas import (
     GetCrimesQueryParams,
 )
 
-api_v1 = SubRouter(__file__, prefix="/api/v1")
-api_v1.exception(exceptions_handler)
-api_v1.configure_authentication(auth_handler)
+prefix = "/api/v1"
+app: SubRouter = Ioc.robyn_app.resolve_sync()
 
 
-@api_v1.post("/crime/add")
+@app.post(f"{prefix}/crime/add")
 async def add_crime(
     crime: CrimeEntity,
 ) -> CrimeResponse:
@@ -48,7 +45,7 @@ async def add_crime(
     return CrimeResponse.model_validate(new_crime)
 
 
-@api_v1.get("/crimes/get")
+@app.get(f"{prefix}/crimes/get")
 async def get_crimes(
     query_params: GetCrimesQueryParams,
 ) -> list[CrimeResponse]:
@@ -62,8 +59,8 @@ async def get_crimes(
     return [CrimeResponse.model_validate(c) for c in crimes]
 
 
-@api_v1.get(
-    f"/crime/:{CrimePathEnum.crime_id}",
+@app.get(
+    f"{prefix}/crime/:{CrimePathEnum.crime_id}",
     auth_required=True,
 )
 async def get_crime(path_params: PathParams) -> CrimeResponse:
@@ -77,7 +74,7 @@ async def get_crime(path_params: PathParams) -> CrimeResponse:
     return CrimeResponse.model_validate(crime)
 
 
-@api_v1.put(f"/crime/update/:{CrimePathEnum.crime_id}")
+@app.put(f"{prefix}/crime/update/:{CrimePathEnum.crime_id}")
 async def update_crime(
     path_params: PathParams,
     new_crime_data: CrimeEntity,
@@ -95,7 +92,7 @@ async def update_crime(
     return CrimeResponse.model_validate(updated_crime)
 
 
-@api_v1.delete(f"/crime/:{CrimePathEnum.crime_id}")
+@app.delete(f"{prefix}/crime/:{CrimePathEnum.crime_id}")
 async def delete_crime(
     path_params: PathParams,
 ) -> DeleteCrimeResponse:

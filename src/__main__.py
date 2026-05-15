@@ -6,18 +6,15 @@ class InitError(Exception): ...
 
 
 try:
-    from .logger import setup_logging
+    from robyn_example.logger import log, setup_logging
 
     setup_logging()
-
-    from .robyn import run_robyn_app
+    from robyn_example.robyn import run_robyn_app
 
     run_robyn_app()
 
 except InitError:
     import sys
 
-    from .logger import log
-
-    log.exception("Unexpected error")
+    log.exception("Unexpected app initialization error")
     sys.exit(1)

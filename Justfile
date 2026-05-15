@@ -16,7 +16,7 @@ default:
     @just --list
 
 run:
-    uv run python -m robyn_example
+    uv run python -m src
 
 build-prod:
     {{DOCKER_PROD}} up -d --build
