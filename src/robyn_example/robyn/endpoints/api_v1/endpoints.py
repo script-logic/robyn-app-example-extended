@@ -32,7 +32,7 @@ from .schemas import (
 )
 
 router = SubRouter(__file__, prefix="/api/v1/")
-router.exception(exceptions_handler)
+router.exception(exceptions_handler)  # pyright: ignore[reportUnknownMemberType]
 router.configure_authentication(auth_handler)
 
 

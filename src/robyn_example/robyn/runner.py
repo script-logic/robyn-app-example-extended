@@ -38,8 +38,8 @@ def run_robyn_app(
         await Ioc.tear_down()
         await log.ainfo("App shutdown")
 
-    app.startup_handler(startup)
-    app.shutdown_handler(shutdown)
+    app.startup_handler(startup)  # pyright: ignore[reportUnknownMemberType]
+    app.shutdown_handler(shutdown)  # pyright: ignore[reportUnknownMemberType]
 
     app.add_request_header("Content-Type", "application/json")
     app.add_response_header("Content-Type", "application/json")
@@ -48,7 +48,7 @@ def run_robyn_app(
     app.include_router(health_router)
 
     @app.before_request()
-    async def before_middleware(request: Request) -> Request:
+    async def before_middleware(request: Request) -> Request:  # pyright: ignore[reportUnusedFunction]
         request.headers.set("start_time", f"{perf_counter_ns()}")
         request_id = str(uuid4())
         request_id_ctx.set(request_id)
@@ -79,7 +79,7 @@ def run_robyn_app(
         return request
 
     @app.after_request()
-    async def after_middleware(
+    async def after_middleware(  # pyright: ignore[reportUnusedFunction]
         request: Request, response: Response
     ) -> Response:
         request_path = request.url.path

@@ -13,7 +13,7 @@ from robyn_example.database import DatabaseManager
 from robyn_example.logger import LoggerConfig
 
 
-class _RealContainer(BaseContainer):
+class RealContainer(BaseContainer):
     default_scope = ContextScopes.REQUEST
     request_id_ctx = Singleton(ContextVar[str], "request_id")
     cfg: Singleton[AppConfig] = Singleton(AppConfig)

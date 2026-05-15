@@ -14,7 +14,7 @@
     "python.analysis.autoImportCompletions": true,
     "python.analysis.completeFunctionParens": true,
     "python.analysis.extraPaths": ["${workspaceFolder}"],
-    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.typeCheckingMode": "strict",
     "python.languageServer": "Pylance",
     "python.testing.pytestArgs": [
         "${workspaceFolder}"

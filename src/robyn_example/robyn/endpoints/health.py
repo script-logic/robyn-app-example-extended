@@ -7,7 +7,7 @@ from robyn_example.robyn import auth_handler
 from .exceptions.exceptions_handler import exceptions_handler
 
 router = SubRouter(__file__, prefix="/api/v1/")
-router.exception(exceptions_handler)
+router.exception(exceptions_handler)  # pyright: ignore[reportUnknownMemberType]
 router.configure_authentication(auth_handler)
 
 
