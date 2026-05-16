@@ -5,11 +5,11 @@ import sys
 from logging import Handler, StreamHandler
 from logging.handlers import RotatingFileHandler
 
+import orjson
 import structlog
 from structlog.types import Processor
 
 from .interfaces import LoggerConfig
-from .renderers import build_console_renderer, build_json_renderer
 
 
 class HandlerBuilder:
@@ -19,22 +19,33 @@ class HandlerBuilder:
     ) -> None:
         self.cfg = logging_config
 
-    def build_console_handler(
+    def build_console_renderer(
         self, shared_processors: list[Processor]
     ) -> Handler:
+        renderer = structlog.dev.ConsoleRenderer(
+            colors=self.cfg.console_colors,
+            pad_event_to=self.cfg.console_pad_event_to,
+        )
         console_formatter = structlog.stdlib.ProcessorFormatter(
-            processor=build_console_renderer(self.cfg),
+            processor=renderer,
             foreign_pre_chain=shared_processors,
         )
         console_handler = StreamHandler(sys.stdout)
         console_handler.setFormatter(console_formatter)
         return console_handler
 
-    def build_file_handler(
+    def build_file_renderer(
         self, shared_processors: list[Processor]
     ) -> Handler:
+        renderer = structlog.processors.JSONRenderer(
+            lambda obj, **_kwargs: orjson.dumps(
+                obj,
+                default=str,
+                option=orjson.OPT_APPEND_NEWLINE,
+            ).decode("utf-8")
+        )
         json_formatter = structlog.stdlib.ProcessorFormatter(
-            processor=build_json_renderer(),
+            processor=renderer,
             foreign_pre_chain=shared_processors,
         )
         log_file = self.cfg.logs_dir / self.cfg.logs_file_name
@@ -50,11 +61,11 @@ class HandlerBuilder:
 
         return file_handler
 
-    def build_handler_chain(
+    def build_handlers_chain(
         self, shared_processors: list[Processor]
     ) -> list[Handler]:
         result: list[Handler] = []
-        result.append(self.build_console_handler(shared_processors))
+        result.append(self.build_console_renderer(shared_processors))
         if self.cfg.enable_file_logging:
-            result.append(self.build_file_handler(shared_processors))
+            result.append(self.build_file_renderer(shared_processors))
         return result

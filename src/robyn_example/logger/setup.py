@@ -21,7 +21,7 @@ def setup_logging(cfg: LoggerConfig = Provide[Ioc.log_cfg]) -> None:
     processor_builder = ProcessorBuilder(cfg)
 
     shared_processors = processor_builder.build_shared_chain()
-    handlers: list[Handler] = handler_builder.build_handler_chain(
+    handlers: list[Handler] = handler_builder.build_handlers_chain(
         shared_processors
     )
 

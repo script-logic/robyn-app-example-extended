@@ -39,8 +39,10 @@ router.configure_authentication(auth_handler)
 async def add_crime(
     crime: CrimeEntity,
 ) -> CrimeResponse:
+
     db_crime = CrimesTable(**crime.model_dump())
-    db: DatabaseManager = await Ioc.db.resolve()
+
+    db: DatabaseManager = Ioc.db.resolve_sync()
 
     async with db.session as session:
         new_crime = await create_crime_repo(db_crime, session)
@@ -52,8 +54,10 @@ async def add_crime(
 async def get_crimes(
     query_params: GetCrimesQueryParams,
 ) -> list[CrimeResponse]:
+
     validated = parse_query_params(query_params, GetCrimesModel)
-    db: DatabaseManager = await Ioc.db.resolve()
+
+    db: DatabaseManager = Ioc.db.resolve_sync()
 
     async with db.session as session:
         crimes = await get_crimes_repo(
@@ -67,8 +71,10 @@ async def get_crimes(
     auth_required=True,
 )
 async def get_crime(path_params: PathParams) -> CrimeResponse:
+
     validated = CrimeId.model_validate(path_params)
-    db: DatabaseManager = await Ioc.db.resolve()
+
+    db: DatabaseManager = Ioc.db.resolve_sync()
 
     async with db.session as session:
         crime = crime_exist_policy(
@@ -82,8 +88,10 @@ async def update_crime(
     path_params: PathParams,
     new_crime_data: CrimeEntity,
 ) -> CrimeResponse:
+
     validated = CrimeId.model_validate(path_params)
-    db: DatabaseManager = await Ioc.db.resolve()
+
+    db: DatabaseManager = Ioc.db.resolve_sync()
 
     async with db.session as session:
         db_crime = crime_exist_policy(
@@ -92,6 +100,7 @@ async def update_crime(
         for key, value in new_crime_data.model_dump().items():
             setattr(db_crime, key, value)
         updated_crime = await update_crime_repo(db_crime, session)
+
     return CrimeResponse.model_validate(updated_crime)
 
 
@@ -99,8 +108,10 @@ async def update_crime(
 async def delete_crime(
     path_params: PathParams,
 ) -> DeleteCrimeResponse:
+
     validated = CrimeId.model_validate(path_params, from_attributes=True)
-    db: DatabaseManager = await Ioc.db.resolve()
+
+    db: DatabaseManager = Ioc.db.resolve_sync()
 
     async with db.session as session:
         db_crime = crime_exist_policy(
