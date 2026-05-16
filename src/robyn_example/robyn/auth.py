@@ -1,10 +1,7 @@
 # Copyright (c) 2026 script-logic <dev.scriptlogic@gmail.com>
 # SPDX-License-Identifier: MIT
 
-from robyn import (
-    AuthenticationHandler,
-    Request,
-)
+from robyn import AuthenticationHandler, Request
 from robyn.authentication import BearerGetter
 from robyn.robyn import Identity
 

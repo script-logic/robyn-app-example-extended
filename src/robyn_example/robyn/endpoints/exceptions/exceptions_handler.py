@@ -6,8 +6,8 @@ from contextvars import ContextVar
 from functools import wraps
 
 from pydantic import BaseModel, ValidationError
-
 from robyn.exceptions import HTTPException
+
 from robyn_example.di import Ioc
 from robyn_example.logger import log
 

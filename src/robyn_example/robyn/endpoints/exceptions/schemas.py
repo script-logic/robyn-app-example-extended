@@ -2,7 +2,6 @@
 # SPDX-License-Identifier: MIT
 
 from pydantic import BaseModel
-
 from robyn import status_codes
 
 

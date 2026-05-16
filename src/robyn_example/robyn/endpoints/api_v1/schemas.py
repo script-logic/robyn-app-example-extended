@@ -4,9 +4,9 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
-
 from robyn import status_codes
 from robyn.robyn import QueryParams
+
 from robyn_example.domain import CrimeEntity
 
 

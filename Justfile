@@ -3,7 +3,7 @@
 dc_file := "docker-compose.yml"
 dc := "docker-compose -f " + dc_file
 TIMEOUT := "timeout /t 5 /nobreak > nul"
-PYTEST := "poetry run pytest"
+PYTEST := "uv run pytest"
 DOCKER_PROD := "docker-compose -f docker-compose.prod.yml"
 DOCKER_DEV := "docker-compose -f docker-compose.dev.yml"
 DOCKER_TEST := "docker-compose -f docker-compose.test.yml"

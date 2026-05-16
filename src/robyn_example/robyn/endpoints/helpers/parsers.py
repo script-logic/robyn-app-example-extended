@@ -4,7 +4,6 @@
 import json
 
 from pydantic import BaseModel
-
 from robyn.robyn import QueryParams
 
 

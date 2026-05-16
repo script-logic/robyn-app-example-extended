@@ -3,6 +3,7 @@
 
 from robyn import SubRouter
 from robyn.types import PathParams
+
 from robyn_example.database import CrimesTable, DatabaseManager
 from robyn_example.database.crime_repository import (
     create_crime_repo,
@@ -14,9 +15,7 @@ from robyn_example.database.crime_repository import (
 from robyn_example.di import Ioc
 from robyn_example.domain import CrimeEntity
 from robyn_example.robyn import auth_handler
-from robyn_example.robyn.endpoints.exceptions import (
-    exceptions_handler,
-)
+from robyn_example.robyn.endpoints.exceptions import exceptions_handler
 from robyn_example.robyn.endpoints.helpers import (
     crime_exist_policy,
     parse_query_params,
@@ -32,7 +31,7 @@ from .schemas import (
 )
 
 router = SubRouter(__file__, prefix="/api/v1/")
-router.exception(exceptions_handler)  # pyright: ignore[reportUnknownMemberType]
+router.exception(exceptions_handler)
 router.configure_authentication(auth_handler)
 
 

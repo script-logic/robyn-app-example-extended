@@ -9,10 +9,7 @@ import structlog
 from structlog.types import Processor
 
 from .interfaces import LoggerConfig
-from .renderers import (
-    build_console_renderer,
-    build_json_renderer,
-)
+from .renderers import build_console_renderer, build_json_renderer
 
 
 class HandlerBuilder:

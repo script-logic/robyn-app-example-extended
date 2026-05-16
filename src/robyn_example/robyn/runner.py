@@ -7,9 +7,9 @@ from contextvars import ContextVar
 from time import perf_counter_ns
 from uuid import uuid4
 
+from robyn import ALLOW_CORS, Request, Response, Robyn
 from that_depends import Provide, inject
 
-from robyn import ALLOW_CORS, Request, Response, Robyn
 from robyn_example.config import AppConfig
 from robyn_example.database import DatabaseManager
 from robyn_example.di import Ioc
@@ -38,8 +38,8 @@ def run_robyn_app(
         await Ioc.tear_down()
         await log.ainfo("App shutdown")
 
-    app.startup_handler(startup)  # pyright: ignore[reportUnknownMemberType]
-    app.shutdown_handler(shutdown)  # pyright: ignore[reportUnknownMemberType]
+    app.startup_handler(startup)
+    app.shutdown_handler(shutdown)
 
     app.add_request_header("Content-Type", "application/json")
     app.add_response_header("Content-Type", "application/json")
@@ -48,7 +48,7 @@ def run_robyn_app(
     app.include_router(health_router)
 
     @app.before_request()
-    async def before_middleware(request: Request) -> Request:  # pyright: ignore[reportUnusedFunction]
+    async def before_middleware(request: Request) -> Request:
         request.headers.set("start_time", f"{perf_counter_ns()}")
         request_id = str(uuid4())
         request_id_ctx.set(request_id)
@@ -79,7 +79,7 @@ def run_robyn_app(
         return request
 
     @app.after_request()
-    async def after_middleware(  # pyright: ignore[reportUnusedFunction]
+    async def after_middleware(
         request: Request, response: Response
     ) -> Response:
         request_path = request.url.path

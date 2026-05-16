@@ -55,6 +55,8 @@ Repository = "https://github.com/script-logic/robyn-app-example-extended"
 package = true
 default-groups = "all"
 
+[tool.pyright]
+ignore = ["reportUnknownMemberType", "reportUnusedFunction"]
 
 [tool.pip-licenses]
 output-file = "THIRD_PARTY_NOTICES.md"
